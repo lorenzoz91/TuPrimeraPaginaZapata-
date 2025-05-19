@@ -1,0 +1,86 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3 # Generalmente no se sube la base de datos de desarrollo
+db.sqlite3-journal
+media/ # Los archivos subidos por los usuarios (imágenes de artículos)
+       # Para un proyecto de clase puede estar bien subirlos, pero en producción se manejan diferente.
+       # Si la consigna no lo prohíbe y quieres mostrar las imágenes de prueba, puedes comentar esta línea.
+       # Si decides NO subir la carpeta media, el que clone el repo no verá las imágenes que subiste.
+staticfiles_build/ # Si usas WhiteNoise o similar para producción
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE / Editor specific
+.vscode/ # Si usas VS Code y no quieres subir su configuración específica del proyecto
+.idea/ # Para PyCharm u otros IDEs de JetBrains
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# macOS
+.DS_Store

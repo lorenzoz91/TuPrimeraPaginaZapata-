@@ -1,0 +1,28 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ titulo_pagina }}{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">{{ titulo_pagina }}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" {% if enctype_multipart %}enctype="multipart/form-data"{% endif %}>
+                        {% csrf_token %}
+                        
+                        {{ form.as_p }}
+
+                        <hr>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">Guardar {{ tipo_entidad }}</button>
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancelar y Volver al Inicio</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

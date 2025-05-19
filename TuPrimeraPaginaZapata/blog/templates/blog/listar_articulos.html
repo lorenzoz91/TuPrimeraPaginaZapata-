@@ -1,0 +1,45 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ titulo_pagina }}{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{{ titulo_pagina }}</h1>
+        <a href="{% url 'crear_articulo' %}" class="btn btn-success">Crear Nuevo Artículo</a>
+    </div>
+    <hr>
+
+    {% if articulos %}
+        {% for articulo in articulos %}
+        <div class="card mb-4 shadow-sm">
+            <div class="row g-0">
+                <div class="col-md-3">
+                    {% if articulo.imagen_destacada %}
+                        <img src="{{ articulo.imagen_destacada.url }}" class="img-fluid rounded-start" alt="{{ articulo.titulo }}" style="object-fit: cover; height: 100%; max-height: 220px;">
+                    {% else %}
+                         <img src="https://via.placeholder.com/400x220.png?text=Sin+Imagen" class="img-fluid rounded-start" alt="Sin imagen" style="object-fit: cover; height: 100%; max-height: 220px;">
+                    {% endif %}
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                        <h4 class="card-title"><a href="{% url 'detalle_articulo' pk=articulo.pk %}" class="text-decoration-none">{{ articulo.titulo }}</a></h4>
+                        <p class="card-text text-muted small">
+                            Por: <strong>{{ articulo.autor.nombre }}</strong> |
+                            Publicado: {{ articulo.fecha_publicacion|date:"d F Y, H:i" }}
+                            {% if articulo.categoria %}
+                                | Categoría: <span class="badge bg-secondary">{{ articulo.categoria.nombre }}</span>
+                            {% endif %}
+                        </p>
+                        <p class="card-text">{{ articulo.contenido|striptags|truncatewords:35 }}</p>
+                        <a href="{% url 'detalle_articulo' pk=articulo.pk %}" class="btn btn-primary btn-sm">Leer artículo completo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            No hay artículos disponibles en este momento. ¿Por qué no <a href="{% url 'crear_articulo' %}" class="alert-link">crear el primero</a>?
+        </div>
+    {% endif %}
+{% endblock %}

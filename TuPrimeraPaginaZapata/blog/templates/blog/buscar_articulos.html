@@ -1,0 +1,61 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ titulo_pagina }}{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <h1 class="mb-4">{{ titulo_pagina }}</h1>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <form method="get" action="{% url 'buscar_articulos' %}" class="row g-3 align-items-center">
+                        <div class="col flex-grow-1">
+                            <label for="{{ form.query.id_for_label }}" class="visually-hidden">{{ form.query.label }}</label>
+                            {{ form.query }} {# Esto usará el widget definido en forms.py con sus clases y placeholder #}
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">Buscar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if query %} {# Bloque 1: Se realizó una búsqueda con un término (query no está vacío) #}
+                <h3 class="mb-3">Resultados para: <mark>{{ query }}</mark></h3>
+                {% if resultados %} {# Si se encontraron resultados para la query #}
+                    {% for articulo in resultados %}
+                    <div class="card mb-3 shadow-sm">
+                        <div class="row g-0">
+                             <div class="col-md-3">
+                                {% if articulo.imagen_destacada %}
+                                    <img src="{{ articulo.imagen_destacada.url }}" class="img-fluid rounded-start" alt="{{ articulo.titulo }}" style="object-fit: cover; height: 100%; max-height:150px;">
+                                {% else %}
+                                     <img src="https://via.placeholder.com/300x150.png?text=Sin+Imagen" class="img-fluid rounded-start" alt="Sin imagen" style="object-fit: cover; height: 100%; max-height:150px;">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body py-2">
+                                    <h5 class="card-title mb-1"><a href="{% url 'detalle_articulo' pk=articulo.pk %}" class="text-decoration-none">{{ articulo.titulo }}</a></h5>
+                                    <p class="card-text"><small class="text-muted">Por: {{ articulo.autor.nombre }} | Publicado: {{ articulo.fecha_publicacion|date:"d M Y" }}</small></p>
+                                    {# Puedes añadir un extracto si quieres, como en listar_articulos.html #}
+                                    {# <p class="card-text d-none d-sm-block">{{ articulo.contenido|striptags|truncatewords:15 }}</p> #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {# Mensaje específico en el área de resultados si hay query PERO NO hay resultados #}
+                    <div class="alert alert-warning mt-3" role="alert">
+                        No se encontraron artículos que coincidan con tu búsqueda para "<strong>{{ query }}</strong>".
+                    </div>
+                {% endif %}
+            {% elif request.GET and not query and not resultados %}
+                {# Bloque 2: El formulario se envió (hay request.GET) pero la query estaba vacía Y no hay resultados (para evitar doble mensaje si la vista ya puso uno) #}
+                <div class="alert alert-info" role="alert">
+                    Por favor, ingresa un término en el campo de búsqueda.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

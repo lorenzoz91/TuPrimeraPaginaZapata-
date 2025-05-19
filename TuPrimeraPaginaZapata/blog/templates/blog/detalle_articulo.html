@@ -1,0 +1,25 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ articulo.titulo }}{% endblock %} {# titulo_pagina ya es el título del artículo desde la vista #}
+
+{% block content %}
+    <article class="blog-post bg-white p-4 p-md-5 rounded shadow-sm">
+        <h1 class="display-5 mb-1">{{ articulo.titulo }}</h1>
+        <p class="blog-post-meta text-muted border-bottom pb-3 mb-3">
+            Publicado el {{ articulo.fecha_publicacion|date:"d \d\e F \d\e Y, H:i" }} por <strong>{{ articulo.autor.nombre }}</strong>.
+            {% if articulo.categoria %}
+                <br>Categoría: <span class="badge bg-info text-dark">{{ articulo.categoria.nombre }}</span>
+            {% endif %}
+        </p>
+
+        {% if articulo.imagen_destacada %}
+            <img src="{{ articulo.imagen_destacada.url }}" class="img-fluid rounded mb-4 shadow" alt="{{ articulo.titulo }}" style="max-height: 450px; width: 100%; object-fit: cover;">
+        {% endif %}
+
+        <div class="article-content">
+            {{ articulo.contenido|linebreaksbr }} {# linebreaksbr respeta los saltos de línea del contenido #}
+        </div>
+    </article>
+    <hr class="my-4">
+    <a href="{% url 'listar_articulos' %}" class="btn btn-outline-secondary">&laquo; Volver a todos los artículos</a>
+{% endblock %}

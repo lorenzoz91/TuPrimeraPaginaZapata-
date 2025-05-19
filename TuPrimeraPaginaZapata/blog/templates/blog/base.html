@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ titulo_pagina|default:"Mi Blog" }}{% endblock %} - TuPrimeraPaginaZapata</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        body {
+            padding-top: 56px; /* Ajuste para navbar fija */
+            background-color: #f8f9fa; /* Un fondo gris claro */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar-brand-custom {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .footer {
+            background-color: #343a40; /* Gris oscuro */
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            margin-top: auto; /* Empuja el footer hacia abajo */
+        }
+        .card-img-top-custom {
+            max-height: 200px; /* Altura máxima para imágenes en tarjetas */
+            object-fit: cover; /* Para que la imagen cubra el espacio sin distorsionarse */
+        }
+        .article-content img { /* Para imágenes dentro del contenido del artículo */
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.25rem;
+            margin-bottom: 1rem;
+        }
+        .messages {
+            list-style: none;
+            padding-left: 0;
+        }
+        /* Ajuste para mensajes flash */
+        .alert {
+            margin-top: 1rem;
+        }
+    </style>
+    {% block extra_head %}{% endblock %} </head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom" href="{% url 'home' %}">Tu Blog Zapata</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'listar_articulos' %}active{% endif %}" href="{% url 'listar_articulos' %}">Artículos</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Crear Nuevo
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="{% url 'crear_articulo' %}">Artículo</a></li>
+                            <li><a class="dropdown-item" href="{% url 'crear_autor' %}">Autor</a></li>
+                            <li><a class="dropdown-item" href="{% url 'crear_categoria' %}">Categoría</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'buscar_articulos' %}active{% endif %}" href="{% url 'buscar_articulos' %}">Buscar</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">Admin Panel</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4 mb-5">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; {% now "Y" %} TuPrimeraPaginaZapata. Desarrollado con Django.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    {% block extra_js %}{% endblock %} </body>
+</html>
